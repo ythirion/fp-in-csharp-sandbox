@@ -8,7 +8,6 @@ namespace RealLifeExample2_async
     class PersonService
     {
         private readonly PersonRepository personRepository;
-        private readonly EmailService emailService;
         private readonly ILogger logger;
         private readonly TwitterService twitterService;
 
@@ -16,7 +15,6 @@ namespace RealLifeExample2_async
         {
             this.logger = logger;
             personRepository = new PersonRepository();
-            emailService = new EmailService();
             twitterService = new TwitterService();
         }
 
@@ -67,10 +65,7 @@ namespace RealLifeExample2_async
                         logger.LogSuccess($"User {personId} registered");
                         result = context.Url;
                     },
-                    exception =>
-                    {
-                        logger.LogFailure($"Unable to register user : {personId} {exception.Message}");
-                    });
+                    exception => logger.LogFailure($"Unable to register user : {personId} {exception.Message}"));
 
             return result;
         }
